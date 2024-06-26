@@ -47,8 +47,15 @@ describe('Movies API', () => {
 
     // checking min producer 
     expect(res.body.min.at(0)).toHaveProperty('producer', 'Joel Silver');
+    expect(res.body.min.at(0)).toHaveProperty('previousWin', 1990);
+    expect(res.body.min.at(0)).toHaveProperty('followingWin', 1991);
+    expect(res.body.min.at(0)).toHaveProperty('interval', 1);
 
     // cheking max producers
     expect(res.body.max.at(0)).toHaveProperty('producer', 'Matthew Vaughn');
+    expect(res.body.max.at(0)).toHaveProperty('previousWin', 2002);
+    expect(res.body.max.at(0)).toHaveProperty('followingWin', 2015);
+    expect(res.body.max.at(0)).toHaveProperty('interval', 13);
   });
+
 });

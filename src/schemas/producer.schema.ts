@@ -8,11 +8,16 @@ interface Producer {
 
 const producerSchema = {
   title: 'Producer schema',
-  primaryKey: "producer",
+  primaryKey: {
+    key: "id",
+    fields: ['producer', 'previousWin', 'followingWin'],
+    separator: '|'
+  },
   version: 0,
   type: 'object',
   properties: {
-    producer: { type: 'string', "maxLength": 200 },
+    id: { type: 'string', "maxLength": 200 },
+    producer: { type: 'string' },
     previousWin: { type: 'number', minimum: 0, maximum: 100000, multipleOf: 1 },
     followingWin: { type: 'number', minimum: 0, maximum: 100000, multipleOf: 1 },
     interval: { type: 'number', minimum: 0, maximum: 100000, multipleOf: 1 },

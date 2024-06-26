@@ -4,7 +4,10 @@ import { rxDB } from "../db";
 // return producers by parameters
 export async function getProducers(order: 'asc' | 'desc', limit?: number) {
   const producers = await (await rxDB()).producers.find({ sort: [{ interval: order }], limit }).exec()
-  return producers.map(producer => producer.toJSON());
+  return producers.map(data => {
+    const { id, ...producer } = data.toJSON()
+    return producer
+  });
 }
 
 // insert producers

@@ -20,6 +20,12 @@ export async function importCsv() {
   const producers = new Array<Producer>()
   readStream.pipe(parser);
 
+  for await (const movie of parser) {
+    movie.winner = movie.winner === 'yes'; // converting to boolean
+    movie.year = +movie.year // converting to integer
+    movies.push(movie);
+  }
+
   // this funciton will check if producer is in list 
   const checkProducersList = (movie: Movie) => {
     const producersList = movie.producers.split(SEPARATOR_PRODUCERS_NAME) // split producers name
@@ -28,20 +34,14 @@ export async function importCsv() {
       if (producer) { // in list, this is the second win
         producer.followingWin = movie.year
         producer.interval = producer.followingWin - producer.previousWin
-      } else { // not in list, this is the first producer win
-        producers.push({ producer: producerName, previousWin: movie.year, followingWin: 0, interval: 0 })
       }
+      producers.push({ producer: producerName, previousWin: movie.year, followingWin: 0, interval: 0 })
     }
   }
 
-  for await (const movie of parser) {
-    movie.winner = movie.winner === 'yes'; // converting to boolean
-    movie.year = +movie.year // converting to integer
-    // if winner, put on producers list
-    if (movie.winner) {
-      checkProducersList(movie)
-    }
-    movies.push(movie);
+  // order movies, and check producer win interval
+  for (const movie of movies.sort((a, b) => a.year - b.year).filter(e => e.winner)) {
+    checkProducersList(movie)
   }
 
   // insert all movies
