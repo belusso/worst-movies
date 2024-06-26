@@ -5,8 +5,8 @@ import { getProducers } from '../services/producer.service';
 export const producersByInterval = async (req: Request, res: Response) => {
   try {
     const producers = await getProducers('asc')
-    const minInterval = producers.at(0).interval
-    const maxInterval = producers.at(-1).interval
+    const minInterval = producers.at(0)?.interval
+    const maxInterval = producers.at(-1)?.interval
     const result = {
       min: producers.filter(e => e.interval == minInterval),
       max: producers.filter(e => e.interval == maxInterval)
